@@ -2,85 +2,43 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CustomerRequest;
 use App\Models\Customer;
 use App\Http\Requests\StoreCustomerRequest;
 use App\Http\Requests\UpdateCustomerRequest;
 
 class CustomerController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    public function createCustomer(CustomerRequest $request)
     {
-        //
+        $customer = [
+            'id_customer' => $request->id_customer,
+            'name' => $request->name,
+            'lastName' => $request->last_name,
+            'phone' => $request->phone,
+            'email' => $request->email,
+        ];
+
+        $customerCreated = Customer::create($customer);
+
+        if ($customerCreated) {
+            return response()->json([
+                "message" => "Customer created successfully."
+            ], 200);
+        } else {
+            return response()->json([
+                "message" => "There was an error creating the customer."
+            ], 400);
+        }
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function getCustomers()
     {
-        //
-    }
+        $customers = Customer::all();
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreCustomerRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(StoreCustomerRequest $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Customer  $customer
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Customer $customer)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Customer  $customer
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Customer $customer)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateCustomerRequest  $request
-     * @param  \App\Models\Customer  $customer
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdateCustomerRequest $request, Customer $customer)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Customer  $customer
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Customer $customer)
-    {
-        //
+        return response()->json([
+            "message" => "Customers found successfully.",
+            "customers" => $customers
+        ], 200);
     }
 }
