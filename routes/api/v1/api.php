@@ -30,6 +30,12 @@ Route::prefix('/user')->group(function () {
         Route::get('/customer/get', 'App\Http\Controllers\CustomerController@getCustomers');
         //end customer routes
 
+        //package routes
+        Route::post('/package/create', 'App\Http\Controllers\PackageController@addPackage');
+        Route::get('/package/get', 'App\Http\Controllers\PackageController@getPackages');
+        Route::put('/package/update', 'App\Http\Controllers\PackageController@updatePackage');
+        //end package routes
+
         //auth routes
         Route::post('/logout', 'App\Http\Controllers\UserController@logout');
         //end auth routes

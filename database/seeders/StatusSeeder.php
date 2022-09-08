@@ -19,6 +19,6 @@ class StatusSeeder extends Seeder
             ['name' => 'In Transit'],
             ['name' => 'Delivered'],
         ];
-        DB::table('status')->insert($data);
+        DB::table('statuses')->insert($data);
     }
 }
