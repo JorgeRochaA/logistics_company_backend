@@ -2,85 +2,91 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PackageRequest;
+use App\Models\Customer;
 use App\Models\Package;
-use App\Http\Requests\StorePackageRequest;
-use App\Http\Requests\UpdatePackageRequest;
+use App\Models\Status;
 
 class PackageController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+
+    public function addPackage(PackageRequest $request)
     {
-        //
+        $package = [
+            'details' => $request->details,
+            'weight' => $request->weight,
+            'delivery_to' => $request->delivery_to,
+            'fk_id_customer' => $request->fk_id_customer,
+            'fk_id_status' => 1, // 1 = "Warehouse"
+        ];
+
+        $validate_delivery_to = Package::where('delivery_to', $request->delivery_to)->first();
+
+        if ($validate_delivery_to && $validate_delivery_to->fk_id_status == 1) {
+            return response()->json([
+                "message" => "There is already a package with the same delivery address."
+            ], 400);
+        } else {
+            $validateUserExist = Customer::find($request->fk_id_customer);
+            if ($validateUserExist) {
+                $packageCreated = Package::create($package);
+
+                if ($packageCreated) {
+                    return response()->json([
+                        "message" => "Package created successfully."
+                    ], 200);
+                } else {
+                    return response()->json([
+                        "message" => "There was an error creating the package."
+                    ], 400);
+                }
+            } else {
+                return response()->json([
+                    "message" => "The user does not exist."
+                ], 400);
+            }
+        }
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function getPackages(PackageRequest $request)
     {
-        //
+        $statusExist = Status::find($request->fk_id_status);
+        if ($statusExist) {
+
+            $packages = Package::where('fk_id_status', $request->fk_id_status)->get();
+
+            return response()->json([
+                "packages" => $packages
+            ], 200);
+        } else {
+            return response()->json([
+                "message" => "The status does not exist."
+            ], 400);
+        }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StorePackageRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(StorePackageRequest $request)
+    public function updatePackage(PackageRequest $request)
     {
-        //
-    }
+        $package = Package::find($request->id);
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Package  $package
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Package $package)
-    {
-        //
-    }
+        if ($package) {
+            $statusExist = Status::find($request->fk_id_status);
+            if ($statusExist) {
+                $package->fk_id_status = $request->fk_id_status;
+                $package->save();
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Package  $package
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Package $package)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdatePackageRequest  $request
-     * @param  \App\Models\Package  $package
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdatePackageRequest $request, Package $package)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Package  $package
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Package $package)
-    {
-        //
+                return response()->json([
+                    "message" => "Package updated successfully."
+                ], 200);
+            } else {
+                return response()->json([
+                    "message" => "The status does not exist."
+                ], 400);
+            }
+        } else {
+            return response()->json([
+                "message" => "The package does not exist."
+            ], 400);
+        }
     }
 }

@@ -8,6 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Package extends Model
 {
     use HasFactory;
-
-    protected $fillable = ['details', 'weight', 'delivery_from', 'delivery_to', 'fk_id_customer', 'fk_id_status'];
+    public $timestamps = false;
+    protected $fillable = ['details', 'weight', 'delivery_to', 'fk_id_customer', 'fk_id_status'];
 }

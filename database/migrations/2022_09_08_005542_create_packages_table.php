@@ -16,11 +16,10 @@ class CreatePackagesTable extends Migration
         Schema::create('packages', function (Blueprint $table) {
             $table->id();
             $table->string('details');
-            $table->string('weight');
-            $table->string('delivery_from');
-            $table->string('delivery_to');
+            $table->integer('weight');
+            $table->string('delivery_to'); //coordinates
             $table->foreignId("fk_id_customer")->references("id_customer")->on("customers")->onDelete("cascade");
-            $table->foreignId("fk_id_status")->references("id")->on("status")->onDelete("cascade")->onUpdate('cascade');
+            $table->foreignId("fk_id_status")->references("id")->on("statuses")->onDelete("cascade")->onUpdate('cascade');
         });
     }
 
