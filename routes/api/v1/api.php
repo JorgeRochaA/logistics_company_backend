@@ -23,9 +23,16 @@ Route::prefix('/user')->group(function () {
     Route::post('/login', 'App\Http\Controllers\UserController@login');
     //end public routes
 
+    //protected routes
     Route::middleware('auth:api')->group(function () {
-        //protected routes
+        //customer routes
+        Route::post('/customer/create', 'App\Http\Controllers\CustomerController@createCustomer');
+        Route::get('/customer/get', 'App\Http\Controllers\CustomerController@getCustomers');
+        //end customer routes
+
+        //auth routes
         Route::post('/logout', 'App\Http\Controllers\UserController@logout');
-        //end protected routes
+        //end auth routes
     });
+    //end protected routes
 });
