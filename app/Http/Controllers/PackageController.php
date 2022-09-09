@@ -48,12 +48,12 @@ class PackageController extends Controller
         }
     }
 
-    public function getPackages(PackageRequest $request)
+    public function getPackages($id)
     {
-        $statusExist = Status::find($request->fk_id_status);
+        $statusExist = Status::find($id);
         if ($statusExist) {
 
-            $packages = Package::where('fk_id_status', $request->fk_id_status)->get();
+            $packages = Package::where('fk_id_status', $id)->get();
 
             $packagess = Package::with(['customer', 'status'])->get();
 

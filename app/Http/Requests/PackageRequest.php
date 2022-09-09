@@ -34,11 +34,9 @@ class PackageRequest extends FormRequest
                     'fk_id_customer' => 'required|numeric',
                 ];
                 break;
-            case 'GET':
-                $rules = [
-                    'fk_id_status' => 'required|numeric',
-                ];
-                break;
+                // case 'GET':
+                // rules for GET request
+                //     break;
             case "PUT":
                 $rules = [
                     'id' => 'required|numeric',

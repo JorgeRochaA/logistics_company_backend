@@ -32,7 +32,7 @@ Route::prefix('/user')->group(function () {
 
         //package routes
         Route::post('/package/create', 'App\Http\Controllers\PackageController@addPackage');
-        Route::get('/package/get', 'App\Http\Controllers\PackageController@getPackages');
+        Route::get('/package/get/{id}', 'App\Http\Controllers\PackageController@getPackages');
         Route::put('/package/update', 'App\Http\Controllers\PackageController@updatePackage');
         //end package routes
 
