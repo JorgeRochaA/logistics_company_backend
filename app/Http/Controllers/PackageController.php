@@ -55,10 +55,8 @@ class PackageController extends Controller
 
             $packages = Package::where('fk_id_status', $id)->get();
 
-            $packagess = Package::with(['customer', 'status'])->get();
-
             return response()->json([
-                "packages" => $packagess
+                "packages" => $packages
             ], 200);
         } else {
             return response()->json([
