@@ -35,7 +35,6 @@ class CustomerController extends Controller
         $customers = Customer::all();
 
         return response()->json([
-            "message" => "Customers found successfully.",
             "customers" => $customers
         ], 200);
     }
