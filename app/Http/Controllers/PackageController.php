@@ -53,7 +53,8 @@ class PackageController extends Controller
         $statusExist = Status::find($id);
         if ($statusExist) {
 
-            $packages = Package::where('fk_id_status', $id)->get();
+            $packages = Package::where('fk_id_status', $id)->with(['customer', 'status'])->get();
+
 
             return response()->json([
                 "packages" => $packages
