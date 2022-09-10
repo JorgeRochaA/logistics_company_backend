@@ -25,7 +25,7 @@ class PackageController extends Controller
         if ($validate_delivery_to && $validate_delivery_to->fk_id_status == 1) {
             return response()->json([
                 "message" => "There is already a package with the same delivery address."
-            ], 400);
+            ], 422);
         } else {
             $validateUserExist = Customer::find($request->fk_id_customer);
             if ($validateUserExist) {
